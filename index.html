@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+    <script src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
+    <script src="http://Learning-Fuze.github.io/calculator/calculator.js"></script>
+    <script src="main.js"></script>
+
+    <style>
+        @font-face {
+            font-family: tangoMacabre;
+            src: url(BikerBones.ttf);
+        }
+
+        .page-wrapper {
+            background-color: #515151;
+            font-family: tangoMacabre, serif;
+        }
+
+        .calculator-container {
+            height: 95vh;
+            width: 50vw;
+            margin: auto;
+            padding: 0;
+            background: url("tombstone.jpg") no-repeat center;
+            background-size: contain;
+            color: ghostwhite;
+            text-align: center;
+        }
+
+        .engraving {
+            position: relative;
+            top: 25%;
+            height: 10%;
+            width: auto;
+            margin: auto;
+            padding: 0;
+            font-size: 2.5vw;
+        }
+
+        .button-wrapper {
+            width: 50%;
+            height: 55%;
+            margin: auto;
+            padding: 0;
+            position: relative;
+            top: 22%
+        }
+
+        button {
+            font-family: tangoMacabre, serif;
+            font-size: 2vw;
+        }
+
+        #number-readout {
+            color: ghostwhite;
+            background-color: black;
+            position: absolute;
+            height: 15%;
+            width: 100%;
+            text-align: right;
+            margin: 0;
+            padding: 0;
+            font-size: 2vw;
+        }
+
+        .clear-buttons {
+            background-color: transparent;
+            position: absolute;
+            height: 12%;
+            width: 72%;
+            margin: 0;
+            padding: 0;
+            top: 18%;
+            left: 0;
+            text-align: center;
+        }
+
+        .clearing {
+            background-color: #d42551;
+            color: ghostwhite;
+            border: none;
+            padding: 0;
+            margin: 2%;
+            height: 85%;
+            width: 30%;
+        }
+
+        .operator-buttons {
+            background-color: transparent;
+            height: 82%;
+            width: 25%;
+            margin: 0;
+            padding: 0;
+            position: absolute;
+            bottom: 0;
+            right: 0;
+            text-align: center;
+        }
+
+        .operators {
+            background-color: #a2304e;
+            color: ghostwhite;
+            border: none;
+            display: block;
+            padding: 0;
+            margin: 4%;
+            height: 24%;
+            width: 90%;
+        }
+
+        .number-buttons {
+            text-align: center;
+            background-color: transparent;
+            height: 68%;
+            width: 72%;
+            margin: 0;
+            padding: 0;
+            position: absolute;
+            bottom: 0;
+            left: 0;
+        }
+
+        .digits {
+            background-color: #df5277;
+        }
+
+        .decimal {
+            background-color: #d42551;
+        }
+
+        .equals {
+            background-color: #a2304e;
+        }
+
+        .digits, .decimal, .equals {
+            border: none;
+            color: ghostwhite;
+            display: inline-block;
+            height: 21%;
+            width: 25%;
+            padding: 0;
+            margin: 2.5%;
+        }
+    </style>
+
+</head>
+
+<body>
+
+<div class="page-wrapper">
+    <div class="calculator-container">
+        <div class="engraving">
+            Here Lies
+        </div>
+        <div class="button-wrapper">
+            <div id="number-readout"></div>
+
+            <div class="clear-buttons">
+                <button class="clearing">C</button>
+                <button class="clearing">CE</button>
+            </div>
+
+            <div class="operator-buttons">
+                <button class="operators">/</button>
+                <button class="operators">x</button>
+                <button class="operators">-</button>
+                <button class="operators">+</button>
+            </div>
+
+            <div class="number-buttons">
+                <button class="digits">7</button>
+                <button class="digits">8</button>
+                <button class="digits">9</button>
+                <button class="digits">4</button>
+                <button class="digits">5</button>
+                <button class="digits">6</button>
+                <button class="digits">1</button>
+                <button class="digits">2</button>
+                <button class="digits">3</button>
+                <button class="digits">0</button>
+                <button class="decimal">.</button>
+                <button class="equals">=</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+</body>
+
+</html>
