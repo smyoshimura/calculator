@@ -32,7 +32,23 @@ var calculations = function (value) {
     this.value = value;
 
     this.inputValue = function (value) {
-      calculationInput.push(value);
+        switch (value) {
+            case 'C':
+                calculationInput = [];
+                $('#number-readout').text('');
+                break;
+
+            case 'CE':
+                calculationInput.pop();
+                this.calcDisplay(calculationInput[calculationInput.length-1]);
+                break;
+
+            default:
+                calculationInput.push(value);
+                this.calcDisplay(value);
+                break;
+        }
+
     };
 
     this.calcDisplay = function (value) {
@@ -49,7 +65,6 @@ $(document).ready(function () {
 
         console.log('clicked');
         var val = $(this).text();
-        calculator.calcDisplay(val);
         calculator.inputValue(val);
         console.log(calculationInput);
 
