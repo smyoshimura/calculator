@@ -2,27 +2,6 @@
  * Created by Stefanie on 10/29/2015.
  */
 
-/* Pre-made calculator.js hook-in code
-
- function displayValue(type, value, item) {
-
- $('#number-readout').text(value);
-
- }
-
- var my_calculator = new calculator(displayValue);
-
- $(document).ready(function () {
-
- $('.button-wrapper').on('click', 'button', function () {
-
- var val = $(this).text();
- my_calculator.addItem(val);
-
- })
-
- });*/
-
 //OOP Calculator First-attempt
 
 var calculations = function (value) {
@@ -54,8 +33,13 @@ var calculations = function (value) {
             case '=':
                 switch (calculationInput.length) {
                     case 1:
-                        this.calcDisplay(calculationInput[calculationInput.length-1].value);
+                        this.calcDisplay(calculationInput[calculationInput.length - 1].value);
                         calculationInput = [];
+                        break;
+
+                    case 0:
+                    case 2:
+                        this.calcDisplay('Error');
                         break;
 
                     case 3:
@@ -63,11 +47,16 @@ var calculations = function (value) {
                         if (!isFinite(output)) {
                             output = 'Error';
                         }
+
+                        else {
+                            calculationInput[0].value = output;
+                        }
                         this.calcDisplay(output);
                         break;
 
                     default:
-                        this.calcDisplay('Error');
+                        var output = this.multiInput();
+                        this.calcDisplay(output);
                         break;
                 }
                 break;
@@ -159,6 +148,18 @@ var calculations = function (value) {
         return output
 
     };
+
+    this.multiInput = function () {
+
+        while (calculationInput.length >= 3) {
+            var firstCalc = this.processInputs();
+            calculationInput[0].value = firstCalc;
+            calculationInput.splice(1, 2);
+        }
+
+        return calculationInput[0].value;
+
+    }
 
 };
 
