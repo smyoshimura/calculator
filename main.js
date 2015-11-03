@@ -52,17 +52,23 @@ var calculations = function (value) {
                 break;
 
             case '=':
-                if (calculationInput.length == 3) {
-                    var output = this.processInputs();
-                    if (!isFinite(output)) {
-                        output = 'Error';
-                    }
-                    this.calcDisplay(output);
-                    calculationInput = [];
-                }
+                switch (calculationInput.length) {
+                    case 1:
+                        this.calcDisplay(calculationInput[calculationInput.length-1].value);
+                        calculationInput = [];
+                        break;
 
-                else {
-                    this.calcDisplay('Not Ready');
+                    case 3:
+                        var output = this.processInputs();
+                        if (!isFinite(output)) {
+                            output = 'Error';
+                        }
+                        this.calcDisplay(output);
+                        break;
+
+                    default:
+                        this.calcDisplay('Error');
+                        break;
                 }
                 break;
 
