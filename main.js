@@ -32,11 +32,6 @@ var calculations = function (value) {
 
     this.canAddDecimal = true;
 
-    //var canAddDecimal = (function () {
-    //    var decimalToggle = false;
-    //    return function () {return decimalToggle = !decimalToggle;}
-    //})();
-
     this.inputValue = function (value) {
 
         var newInput = {
@@ -59,6 +54,9 @@ var calculations = function (value) {
             case '=':
                 if (calculationInput.length == 3) {
                     var output = this.processInputs();
+                    if (!isFinite(output)) {
+                        output = 'Error';
+                    }
                     this.calcDisplay(output);
                     calculationInput = [];
                 }
@@ -72,18 +70,22 @@ var calculations = function (value) {
             case '-':
             case '*':
             case '/':
-                if (calculationInput.length >= 1 && calculationInput[calculationInput.length - 1].type == 'operator') {
-                    calculationInput[calculationInput.length - 1].value = value;
-                }
+                if (calculationInput.length >= 1) {
+                    if (calculationInput[calculationInput.length - 1].type == 'operator') {
+                        calculationInput[calculationInput.length - 1].value = value;
+                    }
 
+                    else {
+                        newInput.value = value;
+                        newInput.type = 'operator';
+                        calculationInput.push(newInput);
+                    }
+                    this.calcDisplay(calculationInput[calculationInput.length - 1].value);
+                    console.log(calculationInput);
+                }
                 else {
-                    newInput.value = value;
-                    newInput.type = 'operator';
-                    calculationInput.push(newInput);
+                    return
                 }
-
-                this.calcDisplay(calculationInput[calculationInput.length -1].value);
-                console.log(calculationInput);
                 break;
 
             case '.':
@@ -97,7 +99,7 @@ var calculations = function (value) {
                 else {
                     return
                 }
-                this.calcDisplay(calculationInput[calculationInput.length -1].value);
+                this.calcDisplay(calculationInput[calculationInput.length - 1].value);
                 console.log(calculationInput);
                 break;
 
@@ -112,7 +114,7 @@ var calculations = function (value) {
                     calculationInput.push(newInput);
                 }
 
-                this.calcDisplay(calculationInput[calculationInput.length -1].value);
+                this.calcDisplay(calculationInput[calculationInput.length - 1].value);
                 console.log(calculationInput);
                 break;
         }
@@ -147,6 +149,7 @@ var calculations = function (value) {
             default:
                 output = parseFloat(calculationInput[0].value) / parseFloat(calculationInput[2].value);
         }
+
         return output
 
     };
