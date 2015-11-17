@@ -175,9 +175,13 @@ $(document).ready(function () {
 
     //Handler for using number keys and numpad
     $(document).keypress(function(e){
-        var actualKeyPress = String.fromCharCode(e.which);
-        console.log(actualKeyPress);
-        calcSupervisor.inputSort(actualKeyPress);
-    });
+        if (e.which == 13) {
+            calcSupervisor.inputSort('=');
+        }
 
+        else {
+            var actualKeyPress = String.fromCharCode(e.which);
+            calcSupervisor.inputSort(actualKeyPress);
+        }
+    });
 });
