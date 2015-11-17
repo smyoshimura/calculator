@@ -1,7 +1,8 @@
-//Calculator Supervisor
+//Calculator Supervisor - delegates and tracks inputs
 var Supervisor = function (input) {
     var self = this;
 
+    //Array for holding all inputs waiting for calculation
     self.calculationInputs = [];
 
     self.input = input;
@@ -10,6 +11,7 @@ var Supervisor = function (input) {
 
         var newInput = new Input(input, '', false);
 
+        //Determines behavior depending on input including clearing, operators, and numerals
         switch (input) {
             case 'C':
                 self.calculationInputs = [];
@@ -22,6 +24,7 @@ var Supervisor = function (input) {
                 break;
 
             case '=':
+                //Determines behavior depending on number of inputs when '=' is entered
                 switch (self.calculationInputs.length) {
                     case 1:
                         self.calcDisplay(self.calculationInputs[self.calculationInputs.length - 1].value);
@@ -107,6 +110,7 @@ var Supervisor = function (input) {
         }
     };
 
+    //Displays relevant input in the readout section in the DOM
     self.calcDisplay = function (input) {
 
         $('#number-readout').text(input);
@@ -114,8 +118,10 @@ var Supervisor = function (input) {
     };
 };
 
-//Calculator Accountant
+//Calculator Accountant - handles all actual calculations
 var Accountant = function () {
+
+    //Main calculation function
     this.processInputs = function () {
 
         var output = null;
@@ -140,6 +146,7 @@ var Accountant = function () {
         return output
     };
 
+    //Rearranges array when there are more than three inputs in a row
     this.multiInput = function () {
 
         while (calcSupervisor.calculationInputs.length >= 3) {
@@ -151,7 +158,7 @@ var Accountant = function () {
     }
 };
 
-//Inputs
+//Inputs - holds needed values for each input
 var Input = function (value, type, hasDecimal) {
     this.value = value;
     this.type = type;
@@ -174,7 +181,8 @@ $(document).ready(function () {
     });
 
     //Handler for using number keys and numpad
-    $(document).keypress(function(e){
+    $(document).keypress(function (e) {
+        //Check for enter key presses
         if (e.which == 13) {
             calcSupervisor.inputSort('=');
         }
