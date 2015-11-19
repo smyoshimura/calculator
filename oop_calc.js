@@ -7,7 +7,7 @@ var Supervisor = function (input) {
 
     self.input = input;
 
-    self.inputSort = function (input) {
+    self.inputSort = function (input, accountant) {
 
         var newInput = new Input(input, '', false);
 
@@ -37,7 +37,7 @@ var Supervisor = function (input) {
                         break;
 
                     case 3:
-                        var output = calcAccountant.multiInput();
+                        var output = accountant.multiInput(self);
                         if (!isFinite(output)) {
                             output = 'Error';
                         }
@@ -50,7 +50,7 @@ var Supervisor = function (input) {
                         break;
 
                     default:
-                        var output = calcAccountant.multiInput();
+                        var output = accountant.multiInput(self);
                         self.calcDisplay(output);
                         break;
                 }
@@ -71,7 +71,6 @@ var Supervisor = function (input) {
                     }
 
                     self.calcDisplay(self.calculationInputs[self.calculationInputs.length - 1].value);
-                    console.log(self.calculationInputs);
                 }
 
                 else {
@@ -90,8 +89,8 @@ var Supervisor = function (input) {
                 else {
                     return
                 }
+
                 self.calcDisplay(self.calculationInputs[self.calculationInputs.length - 1].value);
-                console.log(self.calculationInputs);
                 break;
 
             default:
@@ -105,7 +104,6 @@ var Supervisor = function (input) {
                 }
 
                 self.calcDisplay(self.calculationInputs[self.calculationInputs.length - 1].value);
-                console.log(self.calculationInputs);
                 break;
         }
     };
@@ -114,47 +112,47 @@ var Supervisor = function (input) {
     self.calcDisplay = function (input) {
 
         $('#number-readout').text(input);
-
     };
 };
 
 //Calculator Accountant - handles all actual calculations
 var Accountant = function () {
+    var self = this;
 
     //Main calculation function
-    this.processInputs = function () {
+    self.processInputs = function (supervisor) {
 
         var output = null;
 
-        switch (calcSupervisor.calculationInputs[1].value) {
+        switch (supervisor.calculationInputs[1].value) {
             case '+':
-                output = parseFloat(calcSupervisor.calculationInputs[0].value) + parseFloat(calcSupervisor.calculationInputs[2].value);
+                output = parseFloat(supervisor.calculationInputs[0].value) + parseFloat(supervisor.calculationInputs[2].value);
                 break;
 
             case '-':
-                output = parseFloat(calcSupervisor.calculationInputs[0].value) - parseFloat(calcSupervisor.calculationInputs[2].value);
+                output = parseFloat(supervisor.calculationInputs[0].value) - parseFloat(supervisor.calculationInputs[2].value);
                 break;
 
             case '*':
-                output = parseFloat(calcSupervisor.calculationInputs[0].value) * parseFloat(calcSupervisor.calculationInputs[2].value);
+                output = parseFloat(supervisor.calculationInputs[0].value) * parseFloat(supervisor.calculationInputs[2].value);
                 break;
 
             default:
-                output = parseFloat(calcSupervisor.calculationInputs[0].value) / parseFloat(calcSupervisor.calculationInputs[2].value);
+                output = parseFloat(supervisor.calculationInputs[0].value) / parseFloat(supervisor.calculationInputs[2].value);
         }
 
         return output
     };
 
     //Rearranges array when there are more than three inputs in a row
-    this.multiInput = function () {
+    self.multiInput = function (supervisor) {
 
-        while (calcSupervisor.calculationInputs.length >= 3) {
-            calcSupervisor.calculationInputs[0].value = this.processInputs();
-            calcSupervisor.calculationInputs.splice(1, 2);
+        while (supervisor.calculationInputs.length >= 3) {
+            supervisor.calculationInputs[0].value = self.processInputs(supervisor);
+            supervisor.calculationInputs.splice(1, 2);
         }
 
-        return calcSupervisor.calculationInputs[0].value;
+        return supervisor.calculationInputs[0].value;
     }
 };
 
@@ -165,31 +163,30 @@ var Input = function (value, type, hasDecimal) {
     this.hasDecimal = hasDecimal;
 };
 
-//Calling constructors
-var calcSupervisor = new Supervisor();
-var calcAccountant = new Accountant();
-
 //Document Ready
 $(document).ready(function () {
+    //Calling constructors
+    var calcSupervisor = new Supervisor();
+    var calcAccountant = new Accountant();
 
     //Handler for clicking on the buttons
     $('.button-wrapper').on('click', 'button', function () {
 
         var val = $(this).text();
-        calcSupervisor.inputSort(val);
 
+        calcSupervisor.inputSort(val, calcAccountant);
     });
 
     //Handler for using number keys and numpad
     $(document).keypress(function (e) {
         //Check for enter key presses
         if (e.which == 13) {
-            calcSupervisor.inputSort('=');
+            calcSupervisor.inputSort('=', calcAccountant);
         }
 
         else {
             var actualKeyPress = String.fromCharCode(e.which);
-            calcSupervisor.inputSort(actualKeyPress);
+            calcSupervisor.inputSort(actualKeyPress, calcAccountant);
         }
     });
 });
