@@ -2,6 +2,8 @@
 var Supervisor = function (input) {
     var self = this;
 
+    self.currentDisplay = '';
+
     //Array for holding all inputs waiting for calculation
     self.calculationInputs = [];
 
@@ -9,49 +11,54 @@ var Supervisor = function (input) {
 
     self.inputSort = function (input, accountant) {
 
-        var newInput = new Input(input, '', false);
+        var newInput = new Input(input, '', false, false);
 
         //Determines behavior depending on input including clearing, operators, and numerals
         switch (input) {
             case 'C':
                 self.calculationInputs = [];
-                $('#number-readout').text('');
+                self.currentDisplay = '';
+                self.calcDisplay();
                 break;
 
             case 'CE':
+                self.currentDisplay = self.currentDisplay.slice(0, self.currentDisplay.length - 1);
                 self.calculationInputs.pop();
-                self.calcDisplay(self.calculationInputs[self.calculationInputs.length - 1].value);
+                self.calcDisplay();
                 break;
 
             case '=':
                 //Determines behavior depending on number of inputs when '=' is entered
                 switch (self.calculationInputs.length) {
                     case 1:
-                        self.calcDisplay(self.calculationInputs[self.calculationInputs.length - 1].value);
+                        self.calcDisplay();
+                        self.currentDisplay = '';
                         self.calculationInputs = [];
                         break;
 
                     case 0:
                     case 2:
-                        self.calcDisplay('Error');
+                        self.calcDisplay();
                         break;
 
                     case 3:
                         var output = accountant.multiInput(self);
                         if (!isFinite(output)) {
-                            output = 'Error';
+                            self.currentDisplay = 'Error';
                         }
 
                         else {
                             self.calculationInputs[0].value = output;
+                            self.currentDisplay = output;
                         }
 
-                        self.calcDisplay(output);
+                        self.calcDisplay();
                         break;
 
                     default:
                         var output = accountant.multiInput(self);
-                        self.calcDisplay(output);
+                        self.currentDisplay = output;
+                        self.calcDisplay();
                         break;
                 }
                 break;
@@ -63,14 +70,21 @@ var Supervisor = function (input) {
                 if (self.calculationInputs.length >= 1) {
                     if (self.calculationInputs[self.calculationInputs.length - 1].type == 'operator') {
                         self.calculationInputs[self.calculationInputs.length - 1].value = input;
+                        self.currentDisplay[self.currentDisplay.length - 1] = input;
                     }
 
                     else {
                         newInput.type = 'operator';
                         self.calculationInputs.push(newInput);
+                        self.currentDisplay += input;
                     }
 
-                    self.calcDisplay(self.calculationInputs[self.calculationInputs.length - 1].value);
+                    if (input == '*' || input == '/') {
+                        self.calculationInputs[self.calculationInputs.length - 1].hasPrecedence = true;
+                        self.calculationInputs[self.calculationInputs.length - 2].hasPrecedence = true;
+                    }
+
+                    self.calcDisplay();
                 }
 
                 else {
@@ -82,6 +96,7 @@ var Supervisor = function (input) {
                 if (self.calculationInputs.length >= 1 && !self.calculationInputs[self.calculationInputs.length - 1].hasDecimal) {
                     if (self.calculationInputs.length >= 1 && self.calculationInputs[self.calculationInputs.length - 1].type == 'number') {
                         self.calculationInputs[self.calculationInputs.length - 1].value += input;
+                        self.currentDisplay += input;
                         self.calculationInputs[self.calculationInputs.length - 1].hasDecimal = true;
                     }
                 }
@@ -90,28 +105,34 @@ var Supervisor = function (input) {
                     return
                 }
 
-                self.calcDisplay(self.calculationInputs[self.calculationInputs.length - 1].value);
+                self.calcDisplay();
                 break;
 
             default:
                 if (self.calculationInputs.length >= 1 && self.calculationInputs[self.calculationInputs.length - 1].type == 'number') {
                     self.calculationInputs[self.calculationInputs.length - 1].value += input;
+                    self.currentDisplay += input;
                 }
 
                 else {
                     newInput.type = 'number';
                     self.calculationInputs.push(newInput);
+                    self.currentDisplay += input;
                 }
 
-                self.calcDisplay(self.calculationInputs[self.calculationInputs.length - 1].value);
+                if (self.calculationInputs.length > 1 && self.calculationInputs[self.calculationInputs.length - 2].hasPrecedence == true) {
+                    self.calculationInputs[self.calculationInputs.length - 1].hasPrecedence = true;
+                }
+
+                self.calcDisplay();
                 break;
         }
     };
 
     //Displays relevant input in the readout section in the DOM
-    self.calcDisplay = function (input) {
+    self.calcDisplay = function () {
 
-        $('#number-readout').text(input);
+        $('#number-readout').text(self.currentDisplay);
     };
 };
 
@@ -157,10 +178,11 @@ var Accountant = function () {
 };
 
 //Inputs - holds needed values for each input
-var Input = function (value, type, hasDecimal) {
+var Input = function (value, type, hasDecimal, hasPrecedence) {
     this.value = value;
     this.type = type;
     this.hasDecimal = hasDecimal;
+    this.hasPrecedence = hasPrecedence;
 };
 
 //Document Ready
