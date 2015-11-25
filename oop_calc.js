@@ -42,7 +42,7 @@ var Supervisor = function (input) {
                         break;
 
                     case 3:
-                        var output = accountant.multiInput(self);
+                        var output = accountant.processOrderOps(self);
                         if (!isFinite(output)) {
                             self.currentDisplay = 'Error';
                         }
@@ -56,7 +56,7 @@ var Supervisor = function (input) {
                         break;
 
                     default:
-                        var output = accountant.multiInput(self);
+                        var output = accountant.processOrderOps(self);
                         self.currentDisplay = output;
                         self.calcDisplay();
                         break;
@@ -141,39 +141,67 @@ var Accountant = function () {
     var self = this;
 
     //Main calculation function
-    self.processInputs = function (supervisor) {
+    self.processInputs = function (array) {
 
         var output = null;
 
-        switch (supervisor.calculationInputs[1].value) {
+        switch (array[1].value) {
             case '+':
-                output = parseFloat(supervisor.calculationInputs[0].value) + parseFloat(supervisor.calculationInputs[2].value);
+                output = parseFloat(array[0].value) + parseFloat(array[2].value);
                 break;
 
             case '-':
-                output = parseFloat(supervisor.calculationInputs[0].value) - parseFloat(supervisor.calculationInputs[2].value);
+                output = parseFloat(array[0].value) - parseFloat(array[2].value);
                 break;
 
             case '*':
-                output = parseFloat(supervisor.calculationInputs[0].value) * parseFloat(supervisor.calculationInputs[2].value);
+                output = parseFloat(array[0].value) * parseFloat(array[2].value);
                 break;
 
             default:
-                output = parseFloat(supervisor.calculationInputs[0].value) / parseFloat(supervisor.calculationInputs[2].value);
+                output = parseFloat(array[0].value) / parseFloat(array[2].value);
         }
 
         return output
     };
 
-    //Rearranges array when there are more than three inputs in a row
-    self.multiInput = function (supervisor) {
+    //Processes array when there are more than three inputs in a row
+    self.multiInput = function (array) {
 
-        while (supervisor.calculationInputs.length >= 3) {
-            supervisor.calculationInputs[0].value = self.processInputs(supervisor);
-            supervisor.calculationInputs.splice(1, 2);
+        while (array.length >= 3) {
+            array[0].value = self.processInputs(array);
+            array.splice(1, 2);
         }
 
-        return supervisor.calculationInputs[0].value;
+        return array[0].value;
+    };
+
+    //Processes priority calculations for order of operations
+    self.processOrderOps = function (supervisor) {
+        var tempArray = [];
+        var tempIndexes = [];
+
+        for (var i = 0; i < supervisor.calculationInputs.length ; i++) {
+            if (tempArray.length < 3) {
+                if (supervisor.calculationInputs[i].hasPrecedence == true) {
+                    tempArray.push(supervisor.calculationInputs[i]);
+                    tempIndexes.push(i);
+                }
+            }
+            else {
+
+            }
+        }
+
+        if (tempArray.length == 0) {
+            return self.multiInput(supervisor.calculationInputs)
+        }
+
+        supervisor.calculationInputs[tempIndexes[0]].value = self.processInputs(tempArray);
+        supervisor.calculationInputs[tempIndexes[0]].hasPrecedence = false;
+        supervisor.calculationInputs.splice(tempIndexes[1], 2);
+
+        return self.processOrderOps(supervisor)
     }
 };
 
