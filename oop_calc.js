@@ -181,15 +181,12 @@ var Accountant = function () {
         var tempArray = [];
         var tempIndexes = [];
 
-        for (var i = 0; i < supervisor.calculationInputs.length ; i++) {
+        for (var i = 0; i < supervisor.calculationInputs.length; i++) {
             if (tempArray.length < 3) {
                 if (supervisor.calculationInputs[i].hasPrecedence == true) {
                     tempArray.push(supervisor.calculationInputs[i]);
                     tempIndexes.push(i);
                 }
-            }
-            else {
-
             }
         }
 
@@ -198,8 +195,15 @@ var Accountant = function () {
         }
 
         supervisor.calculationInputs[tempIndexes[0]].value = self.processInputs(tempArray);
-        supervisor.calculationInputs[tempIndexes[0]].hasPrecedence = false;
+
         supervisor.calculationInputs.splice(tempIndexes[1], 2);
+
+        if (supervisor.calculationInputs.length - 1 > tempIndexes[0] && supervisor.calculationInputs[tempIndexes[0] + 1].hasPrecedence == true) {
+            supervisor.calculationInputs[tempIndexes[0]].hasPrecedence = true;
+        }
+        else {
+            supervisor.calculationInputs[tempIndexes[0]].hasPrecedence = false;
+        }
 
         return self.processOrderOps(supervisor)
     }
