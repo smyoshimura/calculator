@@ -1,0 +1,154 @@
+@font-face {
+    font-family: bikerBones;
+    src: url(BikerBones.ttf);
+}
+
+body {
+    background-color: #404040;
+    margin: 0;
+    padding: 0;
+}
+
+.page-wrapper {
+    font-family: bikerBones, serif;
+    margin: 15px;
+}
+
+.calculator-container {
+    height: 850px;
+    width: 750px;
+    margin: auto;
+    padding: 0;
+    background: url("tombstone.png") no-repeat center;
+    background-size: contain;
+    color: ghostwhite;
+    text-align: center;
+}
+
+.engraving {
+    position: relative;
+    top: 25%;
+    height: 10%;
+    width: auto;
+    margin: auto;
+    padding: 0;
+    font-size: 2em;
+}
+
+.button-wrapper {
+    width: 50%;
+    height: 60%;
+    margin: auto;
+    padding: 0;
+    position: relative;
+    top: 22%
+}
+
+button {
+    font-family: bikerBones, serif;
+    font-size: 2em;
+}
+
+button:focus {
+    outline: 0;
+}
+
+#number-readout {
+    color: ghostwhite;
+    background-color: black;
+    position: absolute;
+    height: 15%;
+    width: 100%;
+    text-align: right;
+    margin: 0;
+    padding: 0;
+    font-size: 2em;
+}
+
+.clearing:active, .operators:active, .digits:active, .decimal:active, .equals:active {
+    background-color: #404040;
+}
+
+.clear-buttons {
+    background-color: transparent;
+    position: absolute;
+    height: 12%;
+    width: 72%;
+    margin: 0;
+    padding: 0;
+    top: 18%;
+    left: 0;
+    text-align: center;
+}
+
+.clearing {
+    background-color: slategrey;
+    color: ghostwhite;
+    border: none;
+    padding: 0;
+    margin: 2%;
+    height: 85%;
+    width: 30%;
+    opacity: .85;
+}
+
+.operator-buttons {
+    background-color: transparent;
+    height: 82%;
+    width: 25%;
+    margin: 0;
+    padding: 0;
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    text-align: center;
+}
+
+.operators {
+    background-color: darkgrey;
+    color: ghostwhite;
+    border: none;
+    display: block;
+    padding: 0;
+    margin: 4%;
+    height: 24%;
+    width: 90%;
+    opacity: .85;
+}
+
+.number-buttons {
+    text-align: center;
+    background-color: transparent;
+    height: 68%;
+    width: 72%;
+    margin: 0;
+    padding: 0;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+}
+
+.digits {
+    background-color: grey;
+    opacity: .85;
+}
+
+.decimal {
+    background-color: slategrey;
+    opacity: .85;
+}
+
+.equals {
+    background-color: darkgrey;
+    opacity: .85;
+}
+
+.digits, .decimal, .equals {
+    border: none;
+    color: ghostwhite;
+    display: inline-block;
+    height: 21%;
+    width: 25%;
+    padding: 0;
+    margin: 2.5%;
+}
