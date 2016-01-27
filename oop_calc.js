@@ -79,6 +79,7 @@ var Supervisor = function (input) {
                         self.currentDisplay += input;
                     }
 
+                    //Sets initial precedence of the input
                     if (input == '*' || input == '/') {
                         self.calculationInputs[self.calculationInputs.length - 1].hasPrecedence = true;
                         self.calculationInputs[self.calculationInputs.length - 2].hasPrecedence = true;
@@ -176,7 +177,8 @@ var Accountant = function () {
         return array[0].value;
     };
 
-    //Processes priority calculations for order of operations
+    //Recursively processes priority calculations for order of operations
+    //Continues until no more inputs with precedence are left
     self.processOrderOps = function (supervisor) {
         var tempArray = [];
         var tempIndexes = [];
@@ -190,10 +192,12 @@ var Accountant = function () {
             }
         }
 
+        //Breaks the recursive loops when condition is met
         if (tempArray.length == 0) {
             return self.multiInput(supervisor.calculationInputs)
         }
 
+        //Sends inputs with precedence to be calculated and then re-inserted into the main input array
         supervisor.calculationInputs[tempIndexes[0]].value = self.processInputs(tempArray);
 
         supervisor.calculationInputs.splice(tempIndexes[1], 2);
