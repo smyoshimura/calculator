@@ -3,146 +3,9 @@
 
 <head>
     <script src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
-    <script src="http://Learning-Fuze.github.io/calculator/calculator.js"></script>
     <script src="oop_calc.js"></script>
-
-    <style>
-        @font-face {
-            font-family: bikerBones;
-            src: url(BikerBones.ttf);
-        }
-
-        .page-wrapper {
-            background-color: #515151;
-            font-family: bikerBones, serif;
-        }
-
-        .calculator-container {
-            height: 95vh;
-            width: 50vw;
-            margin: auto;
-            padding: 0;
-            background: url("tombstone.jpg") no-repeat center;
-            background-size: contain;
-            color: ghostwhite;
-            text-align: center;
-        }
-
-        .engraving {
-            position: relative;
-            top: 25%;
-            height: 10%;
-            width: auto;
-            margin: auto;
-            padding: 0;
-            font-size: 2.5vw;
-        }
-
-        .button-wrapper {
-            width: 50%;
-            height: 55%;
-            margin: auto;
-            padding: 0;
-            position: relative;
-            top: 22%
-        }
-
-        button {
-            font-family: bikerBones, serif;
-            font-size: 2vw;
-        }
-
-        #number-readout {
-            color: ghostwhite;
-            background-color: black;
-            position: absolute;
-            height: 15%;
-            width: 100%;
-            text-align: right;
-            margin: 0;
-            padding: 0;
-            font-size: 2vw;
-        }
-
-        .clear-buttons {
-            background-color: transparent;
-            position: absolute;
-            height: 12%;
-            width: 72%;
-            margin: 0;
-            padding: 0;
-            top: 18%;
-            left: 0;
-            text-align: center;
-        }
-
-        .clearing {
-            background-color: slategrey;
-            color: ghostwhite;
-            border: none;
-            padding: 0;
-            margin: 2%;
-            height: 85%;
-            width: 30%;
-        }
-
-        .operator-buttons {
-            background-color: transparent;
-            height: 82%;
-            width: 25%;
-            margin: 0;
-            padding: 0;
-            position: absolute;
-            bottom: 0;
-            right: 0;
-            text-align: center;
-        }
-
-        .operators {
-            background-color: darkgrey;
-            color: ghostwhite;
-            border: none;
-            display: block;
-            padding: 0;
-            margin: 4%;
-            height: 24%;
-            width: 90%;
-        }
-
-        .number-buttons {
-            text-align: center;
-            background-color: transparent;
-            height: 68%;
-            width: 72%;
-            margin: 0;
-            padding: 0;
-            position: absolute;
-            bottom: 0;
-            left: 0;
-        }
-
-        .digits {
-            background-color: grey;
-        }
-
-        .decimal {
-            background-color: slategrey;
-        }
-
-        .equals {
-            background-color: darkgrey;
-        }
-
-        .digits, .decimal, .equals {
-            border: none;
-            color: ghostwhite;
-            display: inline-block;
-            height: 21%;
-            width: 25%;
-            padding: 0;
-            margin: 2.5%;
-        }
-    </style>
+    <link rel="stylesheet" type="text/css" href="style.css">
+    <title>Calcutomb</title>
 </head>
 
 <body>
@@ -151,6 +14,7 @@
         <div class="engraving">
             Here Lies
         </div>
+
         <div class="button-wrapper">
             <div id="number-readout"></div>
 
